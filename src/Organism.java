@@ -64,6 +64,6 @@ public abstract class Organism {
 
     public void setCoordinates()
     {
-        //reference.setObject(x, y, Organism);
+        reference.setObject(x, y, this);
     }
 }

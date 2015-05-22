@@ -3,10 +3,15 @@
  */
 public class Main {
     public static void main(String[] args) {
+
+        FieldManager manager = FieldManager.getFieldManager();
         World world = World.getInstance();
 
-        Herbivore rabbit = new Herbivore(0, 0, world);
-        world.setObject(0, 0, rabbit);
+        for (int i = 0; i < 5; i++)
+        {
+            Herbivore rabbit = new Herbivore(0, i, world);
+            world.setObject(rabbit.getX(), rabbit.getY(), rabbit);
+        }
         world.printField();
     }
 }
