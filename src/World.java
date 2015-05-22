@@ -28,6 +28,11 @@ public class World {
         field[y][x] = null;
     }
 
+    public void setObject(int x, int y, Organism organism)
+    {
+        field[y][x] = organism;
+    }
+
     //the print function below is just a utility
     public void printField()
     {
