@@ -5,18 +5,19 @@ public abstract class Organism {
     protected int energy;
     protected int age;
     protected int x, y;
+    protected World reference;
 
-    public Organism()
+    public Organism(World world)
     {
-
+        setWorldRef(world);
     }
 
-    public Organism(int x, int y, int energy, int age)
+
+    public Organism(int x, int y, World world)
     {
+        setWorldRef(world);
         this.x = x;
         this.y = y;
-        this.energy = energy;
-        this.age = age;
     }
 
     public int getX()
@@ -37,5 +38,27 @@ public abstract class Organism {
     public int getEnergy()
     {
         return energy;
+    }
+
+    protected void setInitAge()
+    {
+
+    }
+    protected void setEnergy()
+    {
+
+    }
+
+    public void setWorldRef(World world)
+    {
+        reference = world;
+    }
+
+    public void die()
+    {
+        if (energy == 0)
+        {
+            reference.removeObj(x, y);
+        }
     }
 }

@@ -3,9 +3,9 @@
  */
 public class Herbivore extends Organism {
 
-    public Herbivore(int x, int y)
+    public Herbivore(int x, int y, World world)
     {
-
+        super(x, y, world);
     }
 
     public void initialAge()
