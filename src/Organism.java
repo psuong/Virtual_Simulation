@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 /**
  * Created by Porrith on 5/21/2015.
  */
@@ -6,6 +8,7 @@ public abstract class Organism {
     protected int age;
     protected int x, y;
     protected World reference;
+    protected boolean isMoving;
 
     public Organism(World world)
     {
@@ -65,5 +68,10 @@ public abstract class Organism {
     public void setCoordinates()
     {
         reference.setObject(x, y, this);
+    }
+
+    public void move()
+    {
+
     }
 }

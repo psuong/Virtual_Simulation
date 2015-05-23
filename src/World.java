@@ -43,4 +43,9 @@ public class World {
             System.out.println("\n");
         }
     }
+
+    public int getDimension()
+    {
+        return dimension;
+    }
 }
