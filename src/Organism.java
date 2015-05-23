@@ -1,4 +1,4 @@
-import java.util.Vector;
+import java.util.Stack;
 
 /**
  * Created by Porrith on 5/21/2015.
@@ -9,6 +9,8 @@ public abstract class Organism {
     protected int x, y;
     protected World reference;
     protected boolean isMoving;
+
+    protected Stack<Node> path;
 
     public Organism(World world)
     {
@@ -21,6 +23,7 @@ public abstract class Organism {
         setWorldRef(world);
         this.x = x;
         this.y = y;
+        path = new Stack<>();
     }
 
     public int getX()
