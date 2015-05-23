@@ -8,26 +8,32 @@ public class Node {
     private int heuristicValue;
     private int totalCost;
     private boolean isVisited;
+    private boolean isEnd;
 
     public Node(int column, int row)
     {
         x = column;
         y = row;
-        cost = 10;
+        cost = 0;
         heuristicValue = 0;
         totalCost = 0;
         isVisited = false;
-    }
-
-    public void setCoordinates(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
+        isEnd = false;
     }
 
     public void setCost(int cost)
     {
         this.cost = cost;
+    }
+
+    public void setEnd()
+    {
+        isEnd = true;
+    }
+
+    public void setVisited()
+    {
+        isVisited = true;
     }
 
     public void setHeuristicValue(int heuristicValue)
@@ -68,5 +74,10 @@ public class Node {
     public boolean getVisited()
     {
         return isVisited;
+    }
+
+    public boolean getEnd()
+    {
+        return isEnd;
     }
 }
