@@ -33,6 +33,14 @@ public class World {
         field[y][x] = organism;
     }
 
+    public boolean checkLocation(int x, int y)
+    {
+        if (field[y][x] == null)
+            return true;
+        else
+            return false;
+    }
+
     //the print function below is just a utility
     public void printField()
     {
@@ -42,6 +50,7 @@ public class World {
             }
             System.out.println("\n");
         }
+        System.out.println("\n");
     }
 
     public int getDimension()

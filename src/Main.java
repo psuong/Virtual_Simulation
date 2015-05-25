@@ -8,12 +8,24 @@ public class Main {
         Manager manager = new Manager(world);
         Herbivore herbivore = new Herbivore(0, 0, world);
 
-        //world.printField();
+        Herbivore herbivore1 = new Herbivore(1, 1, world);
+
+        world.printField();
         manager.setOrganism(herbivore);
         herbivore.setCoordinates();
         manager.aStarSearch(2, 3);
-        //world.printField();
-        herbivore.checkPath();
+        manager.setOrganism(herbivore1);
+        herbivore1.setCoordinates();
+        manager.aStarSearch(6, 7);
+        world.printField();
+        //herbivore.checkPath();
+        for (int i = 0; i < 10; i++) {
+            herbivore.move();
+            herbivore.setCoordinates();
+            herbivore1.move();
+            herbivore1.setCoordinates();
+            world.printField();
+        }
 
     }
 }

@@ -10,7 +10,6 @@ public abstract class Organism {
     protected int age;
     protected int x, y;
     protected World reference;
-    protected boolean isMoving;
 
     protected Queue<Node> path;
 
@@ -83,20 +82,21 @@ public abstract class Organism {
 
     public void move()
     {
-
+        if (!path.isEmpty()) {
+            if (x == path.peek().getX() && y == path.peek().getY())
+                path.remove();
+            reference.removeObj(x, y);
+            setLocation(path.peek().getX(), path.peek().getY());
+            path.remove();
+        }
     }
 
     public void addPath(Node node)
     {
         path.add(node);
-        //System.out.println("X: " + node.getX() + " Y: " + node.getY());
     }
 
-    public Queue getPath()
-    {
-        return path;
-    }
-
+    //utility function for debugging
     public void checkPath()
     {
         while (!path.isEmpty())

@@ -1,4 +1,3 @@
-import java.util.Stack;
 import java.util.Vector;
 
 /**
@@ -11,7 +10,6 @@ public class Manager {
 
     private Node field[][];
 
-    private Stack<Node> closedList;
     private Vector<Node> openList;
 
     public Manager (World world)
@@ -21,7 +19,6 @@ public class Manager {
         field = new Node[dimension][dimension];
 
         openList = new Vector<>();
-        closedList = new Stack<>();
 
         for (int row = 0; row < dimension; row++)
         {
@@ -50,32 +47,23 @@ public class Manager {
 
         field[row][column].setCost(0);
         field[y1][x1].setEnd();
+        //System.out.println("Is End: " + field[y1][x1].getEnd() + " Row: " + y1 + " Col: " + x1);
         field[row][column].setVisited();
         field[row][column].setHeuristicValue(heuristicCost(column, row, x1, y1));
         field[row][column].setPrediction(heuristicCost(column, row, x1, y1) + field[row][column].getCost());
 
-        //System.out.println("Check Loop: " + isFinished(column, row, x1, y1) + " Is Visited: " + field[row][column].getVisited());
-        //System.out.println("Column: " + column + " Row: " + row + " EndX: " + x1 + " EndY: " + y1);
         while (!field[row][column].getEnd())
         {
-            //System.out.println(!field[row][column].getVisited());
+            //System.out.println("State: " + !field[row][column].getEnd() + " Row: " + row + " Col: " + column);
+            //System.out.println("End State: " + field[y1][x1].getEnd());
             checkNeighbors(column, row, x1, y1);
             sortList();
-            System.out.println("Size: " + openList.size());
+            //System.out.println("Size: " + openList.size());
             row = openList.elementAt(0).getY();
             column = openList.elementAt(0).getX();
-            //System.out.println("Row: " + row + " Column: " + column);
             addToPath();
         }
-    }
-
-    private boolean isFinished (int x, int y, int x1, int y1)
-    {
-        if (!field[y][x].getEnd())
-        //if (x != x1 && y != y1)
-            return true;
-        else
-            return false;
+        resetField();
     }
 
     private void checkNeighbors(int x, int y, int x1, int y1) {
@@ -87,47 +75,48 @@ public class Manager {
         {
             minX = x - 1;
             maxX = x;
-            System.out.println("1: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+            //System.out.println("1: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         else if (x == 0)
         {
             minX = x;
             maxX = x + 1;
-            System.out.println("2: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+            //System.out.println("2: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         else //if (x != 0 && x != dimension - 1)
         {
             minX = x - 1;
             maxX = x + 1;
-            System.out.println("3: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+            //System.out.println("3: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         if (y == dimension - 1)
         {
             minY = y - 1;
             maxY = y;
-            System.out.println("4: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+            //System.out.println("4: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         else if (y == 0)
         {
             minY = y;
             maxY = y + 1;
-            System.out.println("5: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+            //System.out.println("5: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         else //if (y != 0 && y != dimension - 1)
         {
             minY = y - 1;
             maxY = y + 1;
-            System.out.println("6: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+            //System.out.println("6: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
 
-        System.out.println("8: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+        //System.out.println("8: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         for (int row = minY; row <= maxY; row++)
         {
             for (int column = minX; column <= maxX; column++)
             {
-                System.out.println("Col: " + column + " Row: " + row);
-                if (!field[row][column].getVisited())
+                //System.out.println("Col: " + column + " Row: " + row);
+                if (!field[row][column].getVisited() /*&& reference.checkLocation(column, row)*/)
                 {
+                    //System.out.println("Col: " + column + " Row: " + row);
                     field[row][column].setHeuristicValue(heuristicCost(column, row, x1, y1));
                     field[row][column].setCost(field[x][y].getCost() + field[row][column].getCost());
                     field[row][column].setPrediction(field[row][column].getCost() + field[row][column].getHeuristicValue());
@@ -153,12 +142,6 @@ public class Manager {
                 index--;
             }
         }
-        /*
-        for (int i = 0; i < openList.size(); i++)
-        {
-            System.out.println("Index: " + i + " Sorted: " + openList.elementAt(i).getHeuristicValue());
-        }
-        */
     }
 
     private void addToPath()
@@ -166,13 +149,16 @@ public class Manager {
         organism.addPath(openList.elementAt(0));
         for (int i = 0; i < openList.size(); i++) {
             openList.elementAt(i).setVisited();
-            closedList.push(openList.elementAt(i));
         }
         openList.removeAllElements();
     }
 
-    public void clearClosed()
+    private void resetField()
     {
-        closedList.removeAllElements();
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                field[i][j] = new Node(j, i);
+            }
+        }
     }
 }
