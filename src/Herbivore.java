@@ -3,13 +3,11 @@
  */
 public class Herbivore extends Organism {
 
-    public Herbivore(int x, int y, World world)
+    public Herbivore(int x, int y, World world, Manager manager)
     {
         super(x, y, world);
-    }
-
-    public void initialAge()
-    {
-
+        setInitAge();
+        setEnergy();
+        setManagerRef(manager);
     }
 }

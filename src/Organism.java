@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
+import java.util.Random;
 
 /**
  * Created by Porrith on 5/21/2015.
@@ -10,21 +10,19 @@ public abstract class Organism {
     protected int age;
     protected int x, y;
     protected World reference;
+    protected Manager manager;
+    protected Random rng;
 
     protected Queue<Node> path;
-
-    public Organism(World world)
-    {
-        setWorldRef(world);
-    }
-
 
     public Organism(int x, int y, World world)
     {
         setWorldRef(world);
         this.x = x;
         this.y = y;
+        rng = new Random();
         path = new LinkedList<>();
+        setCoordinates();
     }
 
     public int getX()
@@ -49,16 +47,21 @@ public abstract class Organism {
 
     protected void setInitAge()
     {
-
+        age = rng.nextInt(10);
     }
     protected void setEnergy()
     {
-
+        energy = rng.nextInt(10);
     }
 
     public void setWorldRef(World world)
     {
         reference = world;
+    }
+
+    public void setManagerRef(Manager manager)
+    {
+        this.manager = manager;
     }
 
     public void die()
@@ -104,5 +107,18 @@ public abstract class Organism {
             System.out.println("Column: " + path.peek().getX() + " Row: " + path.peek().getY());
             path.remove();
         }
+    }
+
+    public void randDestination()
+    {
+        int endX = rng.nextInt(reference.getDimension() - 1);
+        int endY = rng.nextInt(reference.getDimension() - 1);
+        manager.setOrganism(this);
+        manager.aStarSearch(endX, endY);
+    }
+
+    public void setZero()
+    {
+        energy = 0;
     }
 }

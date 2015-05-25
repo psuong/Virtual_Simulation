@@ -12,6 +12,10 @@ public class Manager {
 
     private Vector<Node> openList;
 
+    private Vector<Organism> meatEaters;
+    private Vector<Organism> plantEaters;
+    private Vector<Organism> plants;
+
     public Manager (World world)
     {
         reference = world;
@@ -19,6 +23,9 @@ public class Manager {
         field = new Node[dimension][dimension];
 
         openList = new Vector<>();
+        meatEaters = new Vector<>();
+        plantEaters = new Vector<>();
+        plants = new Vector<>();
 
         for (int row = 0; row < dimension; row++)
         {
@@ -32,6 +39,10 @@ public class Manager {
     public void setOrganism (Organism organism)
     {
         this.organism = organism;
+        if (organism instanceof Herbivore)
+            plantEaters.add(organism);
+        else
+            plants.add(organism);
     }
 
     private int heuristicCost(int x, int y, int x1, int y1)
@@ -54,11 +65,8 @@ public class Manager {
 
         while (!field[row][column].getEnd())
         {
-            //System.out.println("State: " + !field[row][column].getEnd() + " Row: " + row + " Col: " + column);
-            //System.out.println("End State: " + field[y1][x1].getEnd());
             checkNeighbors(column, row, x1, y1);
             sortList();
-            //System.out.println("Size: " + openList.size());
             row = openList.elementAt(0).getY();
             column = openList.elementAt(0).getX();
             addToPath();
@@ -161,4 +169,42 @@ public class Manager {
             }
         }
     }
+
+    public void die()
+    {
+        for (int i = meatEaters.size() - 1; i >= 0; i--)
+        {
+            meatEaters.elementAt(i).die();
+        }
+        for (int i = plantEaters.size() - 1; i >= 0; i--)
+        {
+            plantEaters.elementAt(i).die();
+            plantEaters.remove(i);
+        }
+        for (int i = plants.size() - 1; i >= 0; i--)
+        {
+            plants.elementAt(i).die();
+        }
+    }
+
+    public int getMeatEater()
+    {
+        return meatEaters.size();
+    }
+
+    public int getPlantEater()
+    {
+        return plantEaters.size();
+    }
+
+    public int getPlant()
+    {
+        return plantEaters.size();
+    }
+
+    public Organism accessPlantEater(int i)
+    {
+        return plantEaters.elementAt(i);
+    }
+
 }
