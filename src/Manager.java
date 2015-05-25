@@ -39,6 +39,10 @@ public class Manager {
     public void setOrganism (Organism organism)
     {
         this.organism = organism;
+    }
+
+    public void addOrganism(Organism organism)
+    {
         if (organism instanceof Herbivore)
             plantEaters.add(organism);
         else
@@ -205,6 +209,28 @@ public class Manager {
     public Organism accessPlantEater(int i)
     {
         return plantEaters.elementAt(i);
+    }
+
+    public void createPath()
+    {
+        //System.out.println("# of Animals: " + plantEaters.size());
+        for (int i = 0; i < plantEaters.size(); i++) {
+            //System.out.println("Path Empty: " + plantEaters.elementAt(i).isPathEmpty());
+            if (plantEaters.elementAt(i).isPathEmpty())
+                plantEaters.elementAt(i).randDestination();
+        }
+    }
+
+    public void moveObj()
+    {
+        for(int i = 0; i < plantEaters.size(); i++)
+        {
+            //System.out.println("Path Empty: " + !plantEaters.elementAt(i).isPathEmpty());
+            if (!plantEaters.elementAt(i).isPathEmpty())
+            {
+                plantEaters.elementAt(i).move();
+            }
+        }
     }
 
 }

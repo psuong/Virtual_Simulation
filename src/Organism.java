@@ -85,11 +85,15 @@ public abstract class Organism {
 
     public void move()
     {
+        //System.out.println("2: Path Empty: " + !path.isEmpty());
         if (!path.isEmpty()) {
+            //System.out.println("X: " + x + " Stored X: " + path.peek().getX() + " Y: " + y + " Stored Y: " + path.peek().getY());
             if (x == path.peek().getX() && y == path.peek().getY())
                 path.remove();
             reference.removeObj(x, y);
             setLocation(path.peek().getX(), path.peek().getY());
+            setCoordinates();
+            //System.out.println("Object: " + this + " X: " + x + " Y: " + y);
             path.remove();
         }
     }
@@ -104,7 +108,7 @@ public abstract class Organism {
     {
         while (!path.isEmpty())
         {
-            System.out.println("Column: " + path.peek().getX() + " Row: " + path.peek().getY());
+            //System.out.println("Column: " + path.peek().getX() + " Row: " + path.peek().getY());
             path.remove();
         }
     }
@@ -114,7 +118,21 @@ public abstract class Organism {
         int endX = rng.nextInt(reference.getDimension() - 1);
         int endY = rng.nextInt(reference.getDimension() - 1);
         manager.setOrganism(this);
+        //System.out.println("Object: " + this + " Random Destination: " + "X: " + endX + " Y: " + endY + " Current: " + " X: " + x + " Y: " + y);
         manager.aStarSearch(endX, endY);
+    }
+
+    public boolean isPathEmpty()
+    {
+        if (path.isEmpty())
+            return true;
+        else
+            return false;
+    }
+
+    public int getPathSize()
+    {
+        return path.size();
     }
 
     public void setZero()
