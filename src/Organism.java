@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -10,7 +12,7 @@ public abstract class Organism {
     protected World reference;
     protected boolean isMoving;
 
-    protected Stack<Node> path;
+    protected Queue<Node> path;
 
     public Organism(World world)
     {
@@ -23,7 +25,7 @@ public abstract class Organism {
         setWorldRef(world);
         this.x = x;
         this.y = y;
-        path = new Stack<>();
+        path = new LinkedList<Node>();
     }
 
     public int getX()
@@ -73,8 +75,34 @@ public abstract class Organism {
         reference.setObject(x, y, this);
     }
 
+    public void setLocation(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
     public void move()
     {
 
+    }
+
+    public void addPath(Node node)
+    {
+        path.add(node);
+        //System.out.println("X: " + node.getX() + " Y: " + node.getY());
+    }
+
+    public Queue getPath()
+    {
+        return path;
+    }
+
+    public void popElement()
+    {
+        System.out.println(path.size());
+        if (!path.isEmpty()) {
+            Node node = path.remove();
+            System.out.println(node.getHeuristicValue());
+        }
     }
 }

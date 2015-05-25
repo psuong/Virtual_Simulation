@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Created by Porrith on 5/22/2015.
  * Node stores heuristic value using Manhattan distance for A* algorithm.
@@ -41,7 +43,7 @@ public class Node {
         this.heuristicValue = heuristicValue;
     }
 
-    public void setTotalCost(int total)
+    public void setPrediction(int total)
     {
         totalCost = total;
     }
@@ -56,7 +58,7 @@ public class Node {
         return heuristicValue;
     }
 
-    public int getTotalCost()
+    public int getPredictionVal()
     {
         return totalCost;
     }
