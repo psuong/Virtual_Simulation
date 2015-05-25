@@ -47,33 +47,32 @@ public class Manager {
     {
         int row = organism.getY();
         int column = organism.getX();
-        field[row][column].setCost(0);
 
-        int heuristic = heuristicCost(column, row, x1, y1);
-        int total = field[row][column].getCost() + heuristic;
+        field[row][column].setCost(0);
         field[y1][x1].setEnd();
         field[row][column].setVisited();
-        field[row][column].setHeuristicValue(heuristic);
-        field[row][column].setPrediction(total);
+        field[row][column].setHeuristicValue(heuristicCost(column, row, x1, y1));
+        field[row][column].setPrediction(heuristicCost(column, row, x1, y1) + field[row][column].getCost());
 
-        while (isFinished(column, row, x1, y1))
+        //System.out.println("Check Loop: " + isFinished(column, row, x1, y1) + " Is Visited: " + field[row][column].getVisited());
+        //System.out.println("Column: " + column + " Row: " + row + " EndX: " + x1 + " EndY: " + y1);
+        while (!field[row][column].getEnd())
         {
+            //System.out.println(!field[row][column].getVisited());
             checkNeighbors(column, row, x1, y1);
             sortList();
-            column = openList.elementAt(0).getX();
+            System.out.println("Size: " + openList.size());
             row = openList.elementAt(0).getY();
-            System.out.println("Row: " + row + " Column: " + column);
+            column = openList.elementAt(0).getX();
+            //System.out.println("Row: " + row + " Column: " + column);
             addToPath();
-            if (column == x1 && row == y1)
-            {
-                System.out.println("Row: " + row + " Column: " + column);
-            }
         }
     }
 
     private boolean isFinished (int x, int y, int x1, int y1)
     {
-        if (x != x1 && y != y1)
+        if (!field[y][x].getEnd())
+        //if (x != x1 && y != y1)
             return true;
         else
             return false;
@@ -88,40 +87,51 @@ public class Manager {
         {
             minX = x - 1;
             maxX = x;
+            System.out.println("1: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         else if (x == 0)
         {
             minX = x;
             maxX = x + 1;
+            System.out.println("2: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+        }
+        else //if (x != 0 && x != dimension - 1)
+        {
+            minX = x - 1;
+            maxX = x + 1;
+            System.out.println("3: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         if (y == dimension - 1)
         {
             minY = y - 1;
             maxY = y;
+            System.out.println("4: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         else if (y == 0)
         {
             minY = y;
             maxY = y + 1;
+            System.out.println("5: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
-        else
+        else //if (y != 0 && y != dimension - 1)
         {
-            minX = x - 1;
             minY = y - 1;
-            maxX = x + 1;
             maxY = y + 1;
+            System.out.println("6: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
 
+        System.out.println("8: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         for (int row = minY; row <= maxY; row++)
         {
             for (int column = minX; column <= maxX; column++)
             {
-                if (/*!field[row][column].getVisited() ||*/ !closedList.contains(field[row][column]))
+                System.out.println("Col: " + column + " Row: " + row);
+                if (!field[row][column].getVisited())
                 {
-                    //System.out.println(heuristic + " " + row + " " + column + " " + x1 + " " + y1);
                     field[row][column].setHeuristicValue(heuristicCost(column, row, x1, y1));
                     field[row][column].setCost(field[x][y].getCost() + field[row][column].getCost());
                     field[row][column].setPrediction(field[row][column].getCost() + field[row][column].getHeuristicValue());
+                    field[row][column].setVisited();
                     openList.add(field[row][column]);
                 }
             }
@@ -143,6 +153,12 @@ public class Manager {
                 index--;
             }
         }
+        /*
+        for (int i = 0; i < openList.size(); i++)
+        {
+            System.out.println("Index: " + i + " Sorted: " + openList.elementAt(i).getHeuristicValue());
+        }
+        */
     }
 
     private void addToPath()

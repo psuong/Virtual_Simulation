@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Created by Porrith on 5/22/2015.
  * Node stores heuristic value using Manhattan distance for A* algorithm.

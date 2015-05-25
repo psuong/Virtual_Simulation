@@ -25,7 +25,7 @@ public abstract class Organism {
         setWorldRef(world);
         this.x = x;
         this.y = y;
-        path = new LinkedList<Node>();
+        path = new LinkedList<>();
     }
 
     public int getX()
@@ -97,12 +97,12 @@ public abstract class Organism {
         return path;
     }
 
-    public void popElement()
+    public void checkPath()
     {
-        System.out.println(path.size());
-        if (!path.isEmpty()) {
-            Node node = path.remove();
-            System.out.println(node.getHeuristicValue());
+        while (!path.isEmpty())
+        {
+            System.out.println("Column: " + path.peek().getX() + " Row: " + path.peek().getY());
+            path.remove();
         }
     }
 }

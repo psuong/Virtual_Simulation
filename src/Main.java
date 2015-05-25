@@ -11,8 +11,9 @@ public class Main {
         //world.printField();
         manager.setOrganism(herbivore);
         herbivore.setCoordinates();
-        manager.aStarSearch(3, 2);
-        world.printField();
+        manager.aStarSearch(2, 3);
+        //world.printField();
+        herbivore.checkPath();
 
     }
 }
