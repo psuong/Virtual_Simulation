@@ -4,7 +4,7 @@
 public class World {
 
     private static World world = new World();
-    private int dimension = 5;
+    private int dimension = 10;
 
     private Organism field[][] = new Organism[dimension][dimension];
 

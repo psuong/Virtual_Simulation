@@ -9,32 +9,32 @@ public class Main {
         World world = World.getInstance();
         Manager manager = new Manager(world);
 
-        for (int i = 0; i < 1; i++) {
-            Herbivore herbivore = new Herbivore(i, i, world, manager);
+        Random rng = new Random();
+
+        for (int i = 0; i < 7; i++) {
+            Herbivore herbivore = new Herbivore(rng.nextInt(world.getDimension()), rng.nextInt(world.getDimension()), world, manager);
             manager.addOrganism(herbivore);
         }
 
-        Plant plant = new Plant(0, 1, world, manager);
-        manager.addOrganism(plant);
+        for (int i = 0; i < 5; i++)
+        {
+            Carnivore carnivore = new Carnivore(rng.nextInt(world.getDimension()), rng.nextInt(world.getDimension()), world, manager);
+            manager.addOrganism(carnivore);
+        }
 
-//        manager.setOrganism(herbivore);
-        System.out.println("Initial Field");
-        world.printField();
+        for (int i = 0; i < 7; i++)
+        {
+            Plant plant = new Plant(rng.nextInt(world.getDimension()), rng.nextInt(world.getDimension()), world, manager);
+            manager.addOrganism(plant);
+        }
 
-        //manager.createPath();
-
-        //for (int i = 0; i < 10; i++)
-        //{
-         //   manager.moveObj();
-          //  world.printField();
-        //}
-
-        manager.eat();
-            //manager.createPath();
-            //manager.moveObj();
-            //world.printField();
-        world.printField();
-        world.accessElement(0, 0);
-        //world.accessElement(0, 1);
+        for (int i = 0; i < 10; i++)
+        {
+            manager.createPath();
+            manager.moveObj();
+            manager.killObject();
+            manager.eat();
+            world.printField();
+        }
     }
 }

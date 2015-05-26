@@ -84,15 +84,12 @@ public abstract class Organism {
 
     public void move()
     {
-        //System.out.println("2: Path Empty: " + !path.isEmpty());
         if (!path.isEmpty()) {
-            //System.out.println("X: " + x + " Stored X: " + path.peek().getX() + " Y: " + y + " Stored Y: " + path.peek().getY());
             if (x == path.peek().getX() && y == path.peek().getY())
                 path.remove();
             reference.removeObj(x, y);
             setLocation(path.peek().getX(), path.peek().getY());
             setCoordinates();
-            //System.out.println("Object: " + this + " X: " + x + " Y: " + y);
             path.remove();
         }
     }
@@ -129,6 +126,11 @@ public abstract class Organism {
             return false;
     }
 
+    public void clearPath()
+    {
+        path.clear();
+    }
+
     public int getPathSize()
     {
         return path.size();
@@ -142,5 +144,10 @@ public abstract class Organism {
     public void eat(int energy)
     {
         this.energy += (energy * 0.7);
+    }
+
+    public void loseEnergy()
+    {
+        energy -= 1;
     }
 }

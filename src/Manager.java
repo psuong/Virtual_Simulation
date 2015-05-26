@@ -174,7 +174,7 @@ public class Manager {
         }
     }
 
-    public void die()
+    public void killObject()
     {
         for (int i = meatEaters.size() - 1; i >= 0; i--)
         {
@@ -204,11 +204,6 @@ public class Manager {
     public int getPlant()
     {
         return plantEaters.size();
-    }
-
-    public Organism accessPlantEater(int i)
-    {
-        return plantEaters.elementAt(i);
     }
 
     public void createPath()
@@ -287,6 +282,8 @@ public class Manager {
                 {
                     if (reference.getOrganism(row, column) instanceof Plant)
                     {
+                        if (!organism.isPathEmpty())
+                            organism.clearPath();
                         energy = (int)(reference.getOrganism(row, column).getEnergy() * 0.7);
                         organism.eat(energy);
                         plants.remove(reference.getOrganism(row, column));
@@ -294,10 +291,24 @@ public class Manager {
                         reference.setObject(column, row, organism);
                         organism.setLocation(column, row);
                         organism.setCoordinates();
-                        System.out.println(plants.size());
+                        //System.out.println(plants.size());
                         break;
                     }
                 }
+                else
+                    if (reference.getOrganism(row, column) instanceof Herbivore)
+                    {
+                        if (!organism.isPathEmpty())
+                            organism.clearPath();
+                        energy = (int)(reference.getOrganism(row, column).getEnergy() * 0.7);
+                        organism.eat(energy);
+                        plantEaters.remove(reference.getOrganism(row, column));
+                        reference.removeObj(organism.getX(), organism.getY());
+                        reference.setObject(column, row, organism);
+                        organism.setLocation(column, row);
+                        organism.setCoordinates();
+                        break;
+                    }
             }
         }
     }
