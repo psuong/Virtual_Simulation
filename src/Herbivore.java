@@ -7,7 +7,7 @@ public class Herbivore extends Organism {
     {
         super(x, y, world);
         setInitAge();
-        setEnergy();
+        initEnergy();
         setManagerRef(manager);
     }
 }

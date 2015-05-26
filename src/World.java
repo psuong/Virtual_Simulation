@@ -57,4 +57,15 @@ public class World {
     {
         return dimension;
     }
+
+    public Organism getOrganism(int row, int column)
+    {
+        System.out.println(field[row][column]);
+        return field[row][column];
+    }
+
+    public void accessElement(int x, int y)
+    {
+        System.out.println(field[y][x] + " Energy: " + field[y][x].getEnergy());
+    }
 }

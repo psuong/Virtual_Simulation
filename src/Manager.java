@@ -233,4 +233,80 @@ public class Manager {
         }
     }
 
+    public void getFoodPos(int x, int y, Organism organism)
+    {
+        setOrganism(organism);
+        int minX = 0;
+        int maxX = 0;
+        int minY = 0;
+        int maxY = 0;
+        if (x == dimension - 1)
+        {
+            minX = x - 1;
+            maxX = x;
+            //System.out.println("1: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+        }
+        else if (x == 0)
+        {
+            minX = x;
+            maxX = x + 1;
+            //System.out.println("2: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+        }
+        else //if (x != 0 && x != dimension - 1)
+        {
+            minX = x - 1;
+            maxX = x + 1;
+            //System.out.println("3: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+        }
+        if (y == dimension - 1)
+        {
+            minY = y - 1;
+            maxY = y;
+            //System.out.println("4: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+        }
+        else if (y == 0)
+        {
+            minY = y;
+            maxY = y + 1;
+            //System.out.println("5: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+        }
+        else //if (y != 0 && y != dimension - 1)
+        {
+            minY = y - 1;
+            maxY = y + 1;
+            //System.out.println("6: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+        }
+
+        int energy = 0;
+
+        for (int row = minY; row <= maxY; row++)
+        {
+            for (int column = minX; column <= maxX; column++)
+            {
+                if (organism instanceof Herbivore)
+                {
+                    if (reference.getOrganism(row, column) instanceof Plant)
+                    {
+                        energy = (int)(reference.getOrganism(row, column).getEnergy() * 0.7);
+                        organism.eat(energy);
+                        plants.remove(reference.getOrganism(row, column));
+                        reference.removeObj(organism.getX(), organism.getY());
+                        reference.setObject(column, row, organism);
+                        organism.setLocation(column, row);
+                        organism.setCoordinates();
+                        System.out.println(plants.size());
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void eat()
+    {
+        for (int i = 0; i < plantEaters.size(); i++) {
+            //System.out.println(plantEaters.size());
+            plantEaters.elementAt(i).manager.getFoodPos(plantEaters.elementAt(i).getX(), plantEaters.elementAt(i).getY(), plantEaters.elementAt(i));
+        }
+    }
 }

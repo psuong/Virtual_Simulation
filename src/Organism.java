@@ -18,10 +18,9 @@ public abstract class Organism {
     public Organism(int x, int y, World world)
     {
         setWorldRef(world);
-        this.x = x;
-        this.y = y;
         rng = new Random();
-        path = new LinkedList<>();
+        path = new LinkedList<>();this.x = x;
+        this.y = y;
         setCoordinates();
     }
 
@@ -49,7 +48,7 @@ public abstract class Organism {
     {
         age = rng.nextInt(10);
     }
-    protected void setEnergy()
+    protected void initEnergy()
     {
         energy = rng.nextInt(10);
     }
@@ -138,5 +137,10 @@ public abstract class Organism {
     public void setZero()
     {
         energy = 0;
+    }
+
+    public void eat(int energy)
+    {
+        this.energy += (energy * 0.7);
     }
 }
