@@ -45,6 +45,8 @@ public class Manager {
     {
         if (organism instanceof Herbivore)
             plantEaters.add(organism);
+        else if (organism instanceof Carnivore)
+            meatEaters.add(organism);
         else
             plants.add(organism);
     }
@@ -179,6 +181,7 @@ public class Manager {
         for (int i = meatEaters.size() - 1; i >= 0; i--)
         {
             meatEaters.elementAt(i).die();
+            meatEaters.remove(i);
         }
         for (int i = plantEaters.size() - 1; i >= 0; i--)
         {
@@ -214,16 +217,29 @@ public class Manager {
             if (plantEaters.elementAt(i).isPathEmpty())
                 plantEaters.elementAt(i).randDestination();
         }
+        System.out.println(meatEaters.size());
+        for (int i = 0; i < meatEaters.size(); i++)
+        {
+            System.out.println(meatEaters.elementAt(i).isPathEmpty());
+            if (meatEaters.elementAt(i).isPathEmpty())
+                meatEaters.elementAt(i).randDestination();
+        }
     }
 
     public void moveObj()
     {
         for(int i = 0; i < plantEaters.size(); i++)
         {
-            //System.out.println("Path Empty: " + !plantEaters.elementAt(i).isPathEmpty());
             if (!plantEaters.elementAt(i).isPathEmpty())
             {
                 plantEaters.elementAt(i).move();
+            }
+        }
+        for (int i = 0; i < meatEaters.size(); i++)
+        {
+            if (!meatEaters.elementAt(i).isPathEmpty())
+            {
+                meatEaters.elementAt(i).move();
             }
         }
     }
@@ -316,7 +332,6 @@ public class Manager {
     public void eat()
     {
         for (int i = 0; i < plantEaters.size(); i++) {
-            //System.out.println(plantEaters.size());
             plantEaters.elementAt(i).manager.getFoodPos(plantEaters.elementAt(i).getX(), plantEaters.elementAt(i).getY(), plantEaters.elementAt(i));
         }
         for (int i = 0; i < meatEaters.size(); i++) {
@@ -331,11 +346,27 @@ public class Manager {
         }
         for (int i = 0; i < meatEaters.size(); i++)
         {
-            plantEaters.elementAt(i).loseEnergy();
+            meatEaters.elementAt(i).loseEnergy();
         }
         for (int i = 0; i < plants.size(); i++)
         {
             plants.elementAt(i).loseEnergy();
+        }
+    }
+
+    public void updateField()
+    {
+        for (int i = 0; i < meatEaters.size(); i++)
+        {
+            meatEaters.elementAt(i).setCoordinates();
+        }
+        for (int i = 0; i < plantEaters.size(); i++)
+        {
+            plantEaters.elementAt(i).setCoordinates();
+        }
+        for (int i = 0; i < plants.size(); i++)
+        {
+            plants.elementAt(i).setCoordinates();
         }
     }
 }

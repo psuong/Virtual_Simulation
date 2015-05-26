@@ -50,7 +50,7 @@ public abstract class Organism {
     }
     protected void initEnergy()
     {
-        energy = rng.nextInt(10);
+        energy = rng.nextInt(20);
     }
 
     public void setWorldRef(World world)
@@ -96,6 +96,7 @@ public abstract class Organism {
 
     public void addPath(Node node)
     {
+        System.out.println(node.getX() + " " + node.getY());
         path.add(node);
     }
 
