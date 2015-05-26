@@ -319,5 +319,23 @@ public class Manager {
             //System.out.println(plantEaters.size());
             plantEaters.elementAt(i).manager.getFoodPos(plantEaters.elementAt(i).getX(), plantEaters.elementAt(i).getY(), plantEaters.elementAt(i));
         }
+        for (int i = 0; i < meatEaters.size(); i++) {
+            meatEaters.elementAt(i).manager.getFoodPos(meatEaters.elementAt(i).getX(), meatEaters.elementAt(i).getY(), meatEaters.elementAt(i));
+        }
+    }
+
+    public void loseEnergy()
+    {
+        for (int i = 0; i < plantEaters.size(); i++) {
+            plantEaters.elementAt(i).loseEnergy();
+        }
+        for (int i = 0; i < meatEaters.size(); i++)
+        {
+            plantEaters.elementAt(i).loseEnergy();
+        }
+        for (int i = 0; i < plants.size(); i++)
+        {
+            plants.elementAt(i).loseEnergy();
+        }
     }
 }

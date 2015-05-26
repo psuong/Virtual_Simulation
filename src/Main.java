@@ -34,6 +34,7 @@ public class Main {
             manager.moveObj();
             manager.killObject();
             manager.eat();
+            manager.loseEnergy();
             world.printField();
         }
     }
