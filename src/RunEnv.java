@@ -27,8 +27,8 @@ public class RunEnv implements Runnable {
                 manager.createPath();
                 manager.moveObj();
                 manager.eat();
-                manager.loseEnergy();
-                manager.killObject();
+                //manager.loseEnergy();
+                //manager.killObject();
                 manager.updateField();
                 gui.initGUI();
                 thread.sleep(500);

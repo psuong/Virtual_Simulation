@@ -4,18 +4,22 @@ import java.util.Vector;
  * Created by Porrith on 5/22/2015.
  */
 public class Manager {
+    //Setting references for the manager to handle each object
     private World reference;
     private Organism organism;
     private int dimension;
 
     private Node field[][];
 
+    //openList used for sorting to get least costly path
     private Vector<Node> openList;
 
+    //stores references of each organism on the field
     private Vector<Organism> meatEaters;
     private Vector<Organism> plantEaters;
     private Vector<Organism> plants;
 
+    //constructor initializes every single vector and sets the references
     public Manager (World world)
     {
         reference = world;
@@ -27,6 +31,7 @@ public class Manager {
         plantEaters = new Vector<>();
         plants = new Vector<>();
 
+        //initializing a field for determining the path for every movable organism
         for (int row = 0; row < dimension; row++)
         {
             for (int column = 0; column < dimension; column++)
@@ -36,11 +41,13 @@ public class Manager {
         }
     }
 
+    //sets the reference to an organism
     public void setOrganism (Organism organism)
     {
         this.organism = organism;
     }
 
+    //adds the organism to a list
     public void addOrganism(Organism organism)
     {
         if (organism instanceof Herbivore)
@@ -51,12 +58,14 @@ public class Manager {
             plants.add(organism);
     }
 
+    //gets the Manhattan distance for A* algorithm
     private int heuristicCost(int x, int y, int x1, int y1)
     {
         int heuristics = (Math.abs(x1 - x)*10) + (Math.abs(y1 - y)*10);
         return heuristics;
     }
 
+    //A* search
     public void aStarSearch(int x1, int y1)
     {
         int row = organism.getY();
@@ -80,6 +89,7 @@ public class Manager {
         resetField();
     }
 
+    //checks the Neighbors to determine the least costly neighbor to get to a destination
     private void checkNeighbors(int x, int y, int x1, int y1) {
         int minX = 0;
         int maxX = 0;
@@ -89,48 +99,39 @@ public class Manager {
         {
             minX = x - 1;
             maxX = x;
-            //System.out.println("1: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         else if (x == 0)
         {
             minX = x;
             maxX = x + 1;
-            //System.out.println("2: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
-        else //if (x != 0 && x != dimension - 1)
+        else
         {
             minX = x - 1;
             maxX = x + 1;
-            //System.out.println("3: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         if (y == dimension - 1)
         {
             minY = y - 1;
             maxY = y;
-            //System.out.println("4: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         else if (y == 0)
         {
             minY = y;
             maxY = y + 1;
-            //System.out.println("5: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
-        else //if (y != 0 && y != dimension - 1)
+        else
         {
             minY = y - 1;
             maxY = y + 1;
-            //System.out.println("6: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
-
-        //System.out.println("8: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
+        
         for (int row = minY; row <= maxY; row++)
         {
             for (int column = minX; column <= maxX; column++)
             {
-                //System.out.println("Col: " + column + " Row: " + row);
-                if (!field[row][column].getVisited() /*&& reference.checkLocation(column, row)*/)
+                if (!field[row][column].getVisited())
                 {
-                    //System.out.println("Col: " + column + " Row: " + row);
                     field[row][column].setHeuristicValue(heuristicCost(column, row, x1, y1));
                     field[row][column].setCost(field[x][y].getCost() + field[row][column].getCost());
                     field[row][column].setPrediction(field[row][column].getCost() + field[row][column].getHeuristicValue());
@@ -141,6 +142,7 @@ public class Manager {
         }
     }
 
+    //uses insertion sort to get sort the openList from lowest to highest
     private void sortList()
     {
         Node temp;
@@ -158,6 +160,7 @@ public class Manager {
         }
     }
 
+    //adds the lowest cost neighbor to the path of the organism
     private void addToPath()
     {
         organism.addPath(openList.elementAt(0));
@@ -167,6 +170,7 @@ public class Manager {
         openList.removeAllElements();
     }
 
+    //resets the field of nodes for future calculations
     private void resetField()
     {
         for (int i = 0; i < dimension; i++) {
@@ -176,6 +180,7 @@ public class Manager {
         }
     }
 
+    //removes the object from the world, function currently doesn't work
     public void killObject()
     {
         for (int i = meatEaters.size() - 1; i >= 0; i--)
@@ -193,7 +198,7 @@ public class Manager {
             plants.elementAt(i).die();
         }
     }
-
+    //utility functions to get size of each list
     public int getMeatEater()
     {
         return meatEaters.size();
@@ -209,11 +214,10 @@ public class Manager {
         return plantEaters.size();
     }
 
+    //creates the path for each organism
     public void createPath()
     {
-        //System.out.println("# of Animals: " + plantEaters.size());
         for (int i = 0; i < plantEaters.size(); i++) {
-            //System.out.println("Path Empty: " + plantEaters.elementAt(i).isPathEmpty());
             if (plantEaters.elementAt(i).isPathEmpty())
                 plantEaters.elementAt(i).randDestination();
         }
@@ -226,6 +230,7 @@ public class Manager {
         }
     }
 
+    //moves the organism according to A* algorithm path
     public void moveObj()
     {
         for(int i = 0; i < plantEaters.size(); i++)
@@ -244,6 +249,7 @@ public class Manager {
         }
     }
 
+    //returns the closest position for food
     public void getFoodPos(int x, int y, Organism organism)
     {
         setOrganism(organism);
@@ -255,37 +261,31 @@ public class Manager {
         {
             minX = x - 1;
             maxX = x;
-            //System.out.println("1: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         else if (x == 0)
         {
             minX = x;
             maxX = x + 1;
-            //System.out.println("2: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
-        else //if (x != 0 && x != dimension - 1)
+        else
         {
             minX = x - 1;
             maxX = x + 1;
-            //System.out.println("3: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         if (y == dimension - 1)
         {
             minY = y - 1;
             maxY = y;
-            //System.out.println("4: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
         else if (y == 0)
         {
             minY = y;
             maxY = y + 1;
-            //System.out.println("5: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
-        else //if (y != 0 && y != dimension - 1)
+        else
         {
             minY = y - 1;
             maxY = y + 1;
-            //System.out.println("6: MinX: " + minX + " MinY: " + minY + " MaxX: " + maxX + " MaxY: "+ maxY);
         }
 
         int energy = 0;
@@ -307,7 +307,6 @@ public class Manager {
                         reference.setObject(column, row, organism);
                         organism.setLocation(column, row);
                         organism.setCoordinates();
-                        //System.out.println(plants.size());
                         break;
                     }
                 }
@@ -329,6 +328,7 @@ public class Manager {
         }
     }
 
+    //Allows each organism to eat and gain energy
     public void eat()
     {
         for (int i = 0; i < plantEaters.size(); i++) {
@@ -339,6 +339,7 @@ public class Manager {
         }
     }
 
+    //Each turn organisms lose 1 energy
     public void loseEnergy()
     {
         for (int i = 0; i < plantEaters.size(); i++) {
@@ -354,8 +355,13 @@ public class Manager {
         }
     }
 
+    //updates the field due to collision of objects
     public void updateField()
     {
+        for (int i = 0; i < plants.size(); i++)
+        {
+            plants.elementAt(i).setCoordinates();
+        }
         for (int i = 0; i < meatEaters.size(); i++)
         {
             meatEaters.elementAt(i).setCoordinates();
@@ -363,10 +369,6 @@ public class Manager {
         for (int i = 0; i < plantEaters.size(); i++)
         {
             plantEaters.elementAt(i).setCoordinates();
-        }
-        for (int i = 0; i < plants.size(); i++)
-        {
-            plants.elementAt(i).setCoordinates();
         }
     }
 }

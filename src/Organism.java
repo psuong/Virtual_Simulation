@@ -24,6 +24,7 @@ public abstract class Organism {
         setCoordinates();
     }
 
+    //getters
     public int getX()
     {
         return x;
@@ -44,25 +45,32 @@ public abstract class Organism {
         return energy;
     }
 
+    //setters
+    //sets initial age between 1 to 10
     protected void setInitAge()
     {
         age = rng.nextInt(10);
     }
+
+    //sets the initial energy between 1 to 50
     protected void initEnergy()
     {
-        energy = rng.nextInt(20);
+        energy = rng.nextInt(50);
     }
 
+    //sets the reference of the world
     public void setWorldRef(World world)
     {
         reference = world;
     }
 
+    //sets the manager's reference
     public void setManagerRef(Manager manager)
     {
         this.manager = manager;
     }
 
+    //tells the object to remove itself from the world if energy is 0
     public void die()
     {
         if (energy == 0)
@@ -71,17 +79,20 @@ public abstract class Organism {
         }
     }
 
+    //places the object onto the world, utility function to allow movement
     public void setCoordinates()
     {
         reference.setObject(x, y, this);
     }
 
+    //stores the value of the x and y coordinate into the object
     public void setLocation(int x, int y)
     {
         this.x = x;
         this.y = y;
     }
 
+    //allows the organism to move without leaving copies behind
     public void move()
     {
         if (!path.isEmpty()) {
@@ -94,9 +105,9 @@ public abstract class Organism {
         }
     }
 
+    //adds the node to the organism's path
     public void addPath(Node node)
     {
-        System.out.println(node.getX() + " " + node.getY());
         path.add(node);
     }
 
@@ -110,6 +121,7 @@ public abstract class Organism {
         }
     }
 
+    //allows random wandering
     public void randDestination()
     {
         int endX = rng.nextInt(reference.getDimension() - 1);
@@ -119,6 +131,7 @@ public abstract class Organism {
         manager.aStarSearch(endX, endY);
     }
 
+    //checks if path is empty
     public boolean isPathEmpty()
     {
         if (path.isEmpty())
@@ -127,26 +140,25 @@ public abstract class Organism {
             return false;
     }
 
+    //clears the path
     public void clearPath()
     {
         path.clear();
     }
 
+    //utility function to set size of path
     public int getPathSize()
     {
         return path.size();
     }
 
-    public void setZero()
-    {
-        energy = 0;
-    }
-
+    //allows organism to eat and get energy
     public void eat(int energy)
     {
         this.energy += (energy * 0.7);
     }
 
+    //loses 1 eneryg per point
     public void loseEnergy()
     {
         energy -= 1;
